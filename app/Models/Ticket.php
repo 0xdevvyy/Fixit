@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+use App\Enum\TicketCategory;
+use App\Enum\TicketPriority;
+use App\Enum\TicketStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+// #[Fillable([''])]
+class Ticket extends Model
+{
+    /** @use HasFactory<\Database\Factories\TicketFactory> */
+    use HasFactory;
+
+
+    protected $casts = [
+    
+        'category' => TicketCategory::class,
+        'status' => TicketStatus::class,
+        'priority' => TicketPriority::class,
+
+    ];
+
+    protected $attributes = [
+        'category' => TicketCategory::AIRCON,
+        'status' => TicketStatus::OPEN,
+        'priority' => TicketPriority::MEDIUM,
+    ];
+
+
+
+
+    public function reporter(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
+    public function assignedTo(): BelongsTo {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+}
