@@ -24,6 +24,12 @@ return new class extends Migration
             $table->string('description');
             $table->string('priority')->default('medium')->nullable();
             $table->string('status')->default('open')->nullable();
+
+
+            $table->timestamp('assigned_at')->nullable();
+            $table->timestamp('accepted_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('closed_at')->nullable();
             $table->timestamps();
         });
     }
