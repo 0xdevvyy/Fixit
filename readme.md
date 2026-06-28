@@ -12,4 +12,4 @@ Fixit helps Dominican College of Tarlac manage maintenance requests efficiently 
 
 ## Status
 
-🚧 Currently under development.
+🚧 **Currently under development.**
