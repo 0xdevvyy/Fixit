@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Ticket;
 use App\Models\TicketAttachment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +20,10 @@ class TicketAttachmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'ticket_id' => Ticket::pluck('id')->random(),
+            'user_id' => User::pluck('id')->random(),
+            'image_status' => fake()->randomElement(['before', 'after']),
+            'image_path' =>fake()->imageUrl(),
         ];
     }
 }

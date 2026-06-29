@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Building;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,8 @@ class BuildingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::pluck('id')->random(),
+            'name' => fake()->word()
         ];
     }
 }
