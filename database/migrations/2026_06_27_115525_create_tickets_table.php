@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete(); //user_id, reporter(Facilitator, teacher)
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained()->cascadeOnDelete(); //assigned_to, Maintenance
             $table->foreignIdFor(Building::class)->constrained()->cascadeOnDelete(); //building_id
+            $table->string('title');
             $table->string('ticket_number')->unique();
             $table->string('room')->nullable();
             $table->string('category')->default('aircon')->nullable();
