@@ -6,6 +6,7 @@ enum RoleEnum :string
 {
     case ADMIN = 'admin';
     case MAINTENANCE = 'maintenance';
+    case TEACHER = 'teacher';
     //will add more
 
 
@@ -13,6 +14,7 @@ enum RoleEnum :string
         return match ($this){
             self::ADMIN => 'Admin',
             self::MAINTENANCE => 'Maintenance',
+            self::TEACHER => 'Teacher'
         };
     }
 
