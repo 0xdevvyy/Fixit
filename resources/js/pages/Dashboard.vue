@@ -36,6 +36,8 @@ interface Props {
     openTickets: number
     inProgressTickets: number
     completedTickets: number
+    title: string
+    completedThisMonth: number
 }
 
 const props = defineProps<Props>()
@@ -52,7 +54,7 @@ const user = computed(()=> page.props.auth.user)
         <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold">Dashboard</h1>
+                <h1 class="text-3xl font-bold">{{title}}</h1>
                 <p class="text-muted-foreground">
                     Welcome back {{ user.name }}({{ user.role }}),  Here's what's happening today.
                 </p>
@@ -208,7 +210,7 @@ const user = computed(()=> page.props.auth.user)
                 <div
                     class="flex h-72 items-center justify-center rounded-md border border-dashed"
                 >
-                    Table Placeholder
+                    {{ completedThisMonth }}
                 </div>
             </CardContent>
         </Card>
