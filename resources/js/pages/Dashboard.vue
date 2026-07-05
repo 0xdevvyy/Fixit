@@ -31,13 +31,28 @@ defineOptions({
         ],
     },
 });
-interface Props {
+
+
+interface MonthlyTicket {
+    month: string
+    total: number
+    open: number
+    inProgress: number
+    completed: number
+}
+
+
+interface DashboardStats {
     totalTickets: number
     openTickets: number
     inProgressTickets: number
     completedTickets: number
+}
+
+interface Props {
     title: string
-    completedThisMonth: number
+    stats: DashboardStats
+    charts: MonthlyTicket[]
 }
 
 const props = defineProps<Props>()
@@ -79,7 +94,7 @@ const user = computed(()=> page.props.auth.user)
 
                 <CardContent>
                     <div class="text-3xl font-bold">
-                        {{ totalTickets }}
+                        {{ props.stats.totalTickets }}
                     </div>
 
                     <p class="mt-1 text-sm text-muted-foreground">
@@ -100,7 +115,7 @@ const user = computed(()=> page.props.auth.user)
 
                 <CardContent>
                     <div class="text-3xl font-bold text-orange-500">
-                        {{ openTickets }}
+                        {{ props.stats.openTickets }}
                     </div>
 
                     <p class="mt-1 text-sm text-muted-foreground">
@@ -121,7 +136,7 @@ const user = computed(()=> page.props.auth.user)
 
                 <CardContent>
                     <div class="text-3xl font-bold text-blue-500">
-                        {{ inProgressTickets }}
+                        {{ props.stats.inProgressTickets }}
                     </div>
 
                     <p class="mt-1 text-sm text-muted-foreground">
@@ -142,7 +157,7 @@ const user = computed(()=> page.props.auth.user)
 
                 <CardContent>
                     <div class="text-3xl font-bold text-green-500">
-                        {{ completedTickets }}
+                        {{ props.stats.completedTickets }}
                     </div>
 
                     <p class="mt-1 text-sm text-muted-foreground">
@@ -155,7 +170,7 @@ const user = computed(()=> page.props.auth.user)
         <!-- Middle -->
         <div class="grid gap-4 lg:grid-cols-3">
 
-            <!-- Chart -->
+            <!-- Chart, i should add this as a component-->
             <Card class="lg:col-span-2">
                 <CardHeader>
                     <CardTitle>Ticket Activity</CardTitle>
@@ -170,7 +185,7 @@ const user = computed(()=> page.props.auth.user)
                 </CardContent>
             </Card>
 
-            <!-- Announcements -->
+            <!-- Announcements, this also -->
             <Card>
                 <CardHeader>
                     <CardTitle>Recent Announcements</CardTitle>
@@ -213,7 +228,6 @@ const user = computed(()=> page.props.auth.user)
                     {{ completedThisMonth }}
                 </div>
             </CardContent>
-        </Card>
-
+        </Card>  
     </div>
 </template>

@@ -3,15 +3,22 @@
 namespace App\Services;
 
 use App\Enum\RoleEnum;
-use App\Models\Ticket;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Queries\Ticket\Admin\AdminCharts;
+use App\Queries\Ticket\Admin\AdminStats;
+use App\Queries\Ticket\Maintenance\MaintenanceStats;
+use App\Queries\Ticket\Teacher\TeacherStats;
+
 
 class DashboardService
 {
     
     public function __construct(
-        private TicketStatsService $ticketStats
+        private AdminStats $adminStats,
+        private TeacherStats $teacherStats,
+        private MaintenanceStats $maintenanceStats,
+        private AdminCharts $adminCharts,
+
     ){
        
     }
@@ -23,19 +30,20 @@ class DashboardService
 
             RoleEnum::ADMIN => [
                 'title' => 'Admin Dashboard',
-                ...$this->ticketStats->adminStats(),
-                //or 'stats' => $this->ticketStats->adminStats()?
-                //so that when i get the data it will look like this stats.totalTickets it is more
+                'stats' => $this->adminStats->getAdminStats(),
+                'charts' =>  $this->adminCharts->getAdminCharts(),
+                // dd($this->adminCharts->getAdminCharts())
                 
             ],
             RoleEnum::TEACHER => [
                 'title' => 'Teacher Dashboard',
-                ...$this->ticketStats->teacherStats($user),
+                'stats' => $this->teacherStats->getTeacherStats($user),
                 
             ],
             RoleEnum::MAINTENANCE => [
                 'title' => 'Technician Dashboard',
-                ...$this->ticketStats->maintenanceStats($user),
+                'stats' =>  $this->maintenanceStats->getMaintenanceStats($user),
+                
                
             ],
         };
