@@ -1,22 +1,22 @@
 <?php
 
-
-namespace App\Queries\Ticket\Admin;
+namespace App\Queries\Ticket\Teacher;
 
 use App\Models\Ticket;
 use App\Models\User;
 use App\Queries\Ticket\DashboardChartsQuery;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Override;
 
-class AdminCharts extends DashboardChartsQuery {
+class TeacherCharts extends DashboardChartsQuery {
     
 
     #[Override]
     protected function baseQuery(?User $user = null): Builder
     {
-        return Ticket::query();
+        return Ticket::query()
+            ->where('tickets.user_id', $user->id);
     }
+
+
 }
