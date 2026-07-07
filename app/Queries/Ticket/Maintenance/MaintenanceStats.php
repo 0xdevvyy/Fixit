@@ -10,17 +10,17 @@ class MaintenanceStats {
 
     public function getMaintenanceStats(User $user): array{
         return[
-            'totalTickets' => Ticket::where('assigned_to', $user->id)->count(),
+            'totalTickets' => $user->assignedTickets()->count(),
 
-            'openTickets' => Ticket::where('assigned_to', $user->id)
+            'openTickets' => $user->assignedTickets()
                 ->where('status', 'open')
                 ->count(),
 
-            'inProgressTickets' => Ticket::where('assigned_to', $user->id)
+            'inProgressTickets' => $user->assignedTickets()
                 ->where('status', 'in_progress')
                 ->count(),
 
-            'completedTickets' => Ticket::where('assigned_to', $user->id)
+            'completedTickets' => $user->assignedTickets()
                 ->where('status', 'completed')
                 ->count(),
         ];

@@ -9,7 +9,7 @@ enum TicketStatus: string
     case IN_PROGRESS = 'in_progress';
     case RESOLVED = 'resolved';
     case CLOSED = 'closed';
-    //there is no completed
+    case COMPLETEF = 'completed';
 
 
     public function status(): string {
@@ -19,6 +19,7 @@ enum TicketStatus: string
             self::IN_PROGRESS => 'In Progress',
             self::RESOLVED => 'Resolved',
             self::CLOSED => 'Closed',
+            self::COMPLETEF => 'Completed',
         };
     }
 

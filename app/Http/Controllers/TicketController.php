@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Models\User;
+use App\Services\TicketService;
+use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(#[CurrentUser()] User $user, TicketService $ticket)
     {
-        //
+        return Inertia::render('ticket/Index', $ticket->data($user));
+        // dd(Auth::user()->assignedTickets()->latest()->paginate());
     }
 
     /**

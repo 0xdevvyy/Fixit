@@ -36,7 +36,7 @@ class Ticket extends Model
 
     //note: this can still all change
     public function reporter(): BelongsTo {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     //is the naming correct? can it be maintenance or technician?
