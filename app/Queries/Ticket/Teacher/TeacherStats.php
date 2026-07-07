@@ -9,17 +9,17 @@ use App\Models\User;
 final class TeacherStats {
     public function getTeacherStats(User $user): array {
         return[
-            'totalTickets' => Ticket::where('user_id', $user->id)->count(),
+            'totalTickets' => $user->reportedTickets()->count(),
 
-            'openTickets' => Ticket::where('user_id', $user->id)
+            'openTickets' => $user->reportedTickets()
                 ->where('status', 'open')
                 ->count(),
 
-            'inProgressTickets' => Ticket::where('user_id', $user->id)
+            'inProgressTickets' => $user->reportedTickets()
                 ->where('status', 'in_progress')
                 ->count(),
 
-            'completedTickets' => Ticket::where('user_id', $user->id)
+            'completedTickets' => $user->reportedTickets()
                 ->where('status', 'completed')
                 ->count(),
         ];
