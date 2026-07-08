@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Ticket\CreateTicket;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
@@ -27,15 +28,22 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('ticket/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTicketRequest $request)
+    public function store(StoreTicketRequest $request, #[CurrentUser()] User $user, CreateTicket $action)
     {
-        //
+        $action->execute($request->validated(), $user);
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'Ticket Succesfully Created',
+        ]);
+
+        return  to_route('tickets.index');
     }
 
     /**

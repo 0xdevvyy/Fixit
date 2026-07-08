@@ -22,8 +22,8 @@ class TicketService {
             RoleEnum::ADMIN => [
                 //get all tickets paginate 10 
                 'tickets' => Ticket::with(['reporter', 'assignedTo'])
-                    ->get()
-                    ->map(fn($ticket) => [
+                    ->paginate(10)
+                    ->through(fn($ticket) => [
                         'id' => $ticket->id,
                         'title' => $ticket->title,
                         'description' => $ticket->description,
@@ -32,7 +32,7 @@ class TicketService {
                         'room' => $ticket->room,
                         'ticket_number' => $ticket->ticket_number,
                         'status' => $ticket->status,
-                        'user_id' => $ticket->reporter->name,
+                        'reporter' => $ticket->reporter->name,
                         'assigned_to' => $ticket->assignedTo?->name,
                     ]),
                 
@@ -42,8 +42,8 @@ class TicketService {
                 //will add all of this into a query class for now it is just testing if its working
                 'tickets' => $user->reportedTickets()
                     ->with(['reporter','assignedTo'])
-                    ->get()
-                    ->map(fn($ticket) => [
+                    ->paginate()
+                    ->through(fn($ticket) => [
                         'title' => $ticket->title,
                         'description' => $ticket->description,
                         'category' => $ticket->category,
@@ -60,8 +60,8 @@ class TicketService {
                 //will add a query, and in the front end a status button 
                 'tickets' => $user->assignedTickets()
                     ->with(['reporter','assignedTo'])
-                    ->get()
-                    ->map(fn($ticket) => [
+                    ->paginate(10)
+                    ->through(fn($ticket) => [
                         'title' => $ticket->title,
                         'description' => $ticket->description,
                         'category' => $ticket->category,

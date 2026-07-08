@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 
 import TicketTable from '@/components/tickets/TicketTable.vue'
-import ticketsRoute from '@/routes/tickets'
+
+import TicketsFilters from '@/components/tickets/TicketsFilters.vue'
+import tickets from '@/routes/tickets'
+import Pagination from '@/components/Pagination.vue'
+import { Button } from '@/components/ui/button'
+import { Plus } from '@lucide/vue'
 
 defineOptions({
   layout: {
     breadcrumbs: [
       {
         title: 'Tickets',
-        href: ticketsRoute.index(),
+        href: tickets.index(),
       },
       
     ],
@@ -27,11 +32,31 @@ interface Ticket {
   assigned_to: string | null
   reporter: string
   room: string
-//   created_at?: string should i add it?
+  // created_at?: string
 }
 
-interface Props{
-    tickets: Ticket[]
+interface PaginatedTickets {
+  data: Ticket[]
+  current_page: number
+  last_page: number
+  per_page: number
+  total: number
+  from: number | null
+  to: number | null
+  first_page_url: string
+  last_page_url: string
+  next_page_url: string | null
+  prev_page_url: string | null
+  path: string
+  links: {
+    url: string | null
+    label: string
+    active: boolean
+  }[]
+}
+
+interface Props {
+  tickets: PaginatedTickets
 }
 
 const props = defineProps<Props>()
@@ -43,16 +68,27 @@ const props = defineProps<Props>()
   <Head title="Tickets" />
 
   <div class="space-y-6 p-6">
-    <div>
-      <h1 class="text-3xl font-bold tracking-tight">
-        Tickets
-      </h1>
+    <div class="flex items-start justify-between">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">
+          Tickets
+        </h1>
 
-      <p class="text-muted-foreground">
-        Manage and track support tickets.
-      </p>
+        <p class="text-muted-foreground">
+          Manage and track support tickets.
+        </p>
+      </div>
+        <Link :href="tickets.create()">
+          <Button class="cursor-pointer">
+              <Plus class="mr-2 h-4 w-4" />
+              Create Ticket
+          </Button>
+        </Link>
+      
     </div>
+    <TicketsFilters />
 
-    <TicketTable :tickets="tickets" />
+    <TicketTable :tickets="props.tickets.data" />
+    <Pagination :links="props.tickets.links" />
   </div>
 </template>
