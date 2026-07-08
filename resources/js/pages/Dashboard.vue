@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { dashboard } from '@/routes';
 import {
@@ -16,10 +16,12 @@ import {
     CircleCheckBig,
     CircleAlert,
     Hammer,
+    Plus,
 } from '@lucide/vue'
 
 import { Button } from '@/components/ui/button';
 import { computed } from 'vue';
+import tickets from '@/routes/tickets';
 
 defineOptions({
     layout: {
@@ -75,9 +77,12 @@ const user = computed(()=> page.props.auth.user)
                 </p>
             </div>
 
-            <Button class="cursor-pointer">
-                + New Ticket
-            </Button>
+            <Link :href="tickets.create()">
+                <Button class="cursor-pointer">
+                    <Plus class="mr-2 h-4 w-4" />
+                    Create Ticket
+                </Button>
+            </Link>
         </div>
 
         <!-- Stats -->

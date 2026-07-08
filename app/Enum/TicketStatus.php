@@ -4,22 +4,24 @@ namespace App\Enum;
 
 enum TicketStatus: string
 {
+    case PENDING = 'pending';
     case OPEN = 'open';
     case ASSIGNED = 'assigned';
     case IN_PROGRESS = 'in_progress';
     case RESOLVED = 'resolved';
     case CLOSED = 'closed';
-    case COMPLETEF = 'completed';
+    case COMPLETED = 'completed';
 
 
     public function status(): string {
         return match ($this){
+            self::PENDING => 'Pending',
             self::OPEN => 'Open',
             self::ASSIGNED => 'Assigned',
             self::IN_PROGRESS => 'In Progress',
             self::RESOLVED => 'Resolved',
             self::CLOSED => 'Closed',
-            self::COMPLETEF => 'Completed',
+            self::COMPLETED => 'Completed',
         };
     }
 
