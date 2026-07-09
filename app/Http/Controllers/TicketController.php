@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Ticket\CreateTicket;
+use App\Enum\TicketCategory;
+use App\Enum\TicketPriority;
+use App\Enum\TicketStatus;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Models\Building;
 use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Container\Attributes\CurrentUser;
@@ -28,7 +32,28 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return Inertia::render('ticket/Create');
+        return Inertia::render('ticket/Create', [
+            'users' => User::select('id', 'name')
+                ->where('role', 'maintenance') 
+                ->get(),
+
+            'buildings' => Building::select('id', 'name')->get(),
+
+            'categories' => collect(TicketCategory::cases())->map(fn ($category) => [
+                'value' => $category->value,
+                'label' => str($category->value)->headline(),
+            ]),
+
+            'priority' => collect(TicketPriority::cases())->map(fn ($priority) => [
+                'value' => $priority->value,
+                'label' => str($priority->value)->headline(),
+            ]),
+
+            'status' => collect(TicketStatus::cases())->map(fn ($status) => [
+                'value' => $status->value,
+                'label' => str($status->value)->headline(),
+            ]),
+        ]);
     }
 
     /**
@@ -36,6 +61,7 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request, #[CurrentUser()] User $user, CreateTicket $action)
     {
+        // dd($request->validated());
         $action->execute($request->validated(), $user);
 
         Inertia::flash('toast', [
