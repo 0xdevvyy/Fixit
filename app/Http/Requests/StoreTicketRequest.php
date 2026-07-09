@@ -33,17 +33,17 @@ class StoreTicketRequest extends FormRequest
             'title' => ['required', 'string', 'min:3', 'max:50'],
             'description' => ['required', 'string', 'min:3', 'max:255'],
 
-            'ticket_number' => [
-                'required',
-                'string',
-                'unique:tickets,ticket_number',
-            ],
+            // 'ticket_number' => [
+            //     'required',
+            //     'string',
+            //     'unique:tickets,ticket_number',
+            // ],
 
             'room' => ['nullable', 'string', 'max:50', 'min:3'],
 
-            'category' => ['nullable', new Enum(TicketCategory::cases())],
-            'priority' => ['nullable', new Enum(TicketPriority::cases())],
-            'status' => ['nullable', new Enum(TicketStatus::cases())],
+            'category' => ['nullable', new Enum(TicketCategory::class)],
+            'priority' => ['nullable', new Enum(TicketPriority::class)],
+            'status' => ['nullable', new Enum(TicketStatus::class)],
         ];
     }
 }
