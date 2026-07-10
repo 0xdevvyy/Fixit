@@ -44,6 +44,7 @@ class TicketService {
                     ->with(['reporter','assignedTo'])
                     ->paginate()
                     ->through(fn($ticket) => [
+                        'id' => $ticket->id,
                         'title' => $ticket->title,
                         'description' => $ticket->description,
                         'category' => $ticket->category,
@@ -62,6 +63,7 @@ class TicketService {
                     ->with(['reporter','assignedTo'])
                     ->paginate(10)
                     ->through(fn($ticket) => [
+                        'id' => $ticket->id,
                         'title' => $ticket->title,
                         'description' => $ticket->description,
                         'category' => $ticket->category,

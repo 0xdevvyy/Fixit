@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
 
+import { Plus } from '@lucide/vue'
+import Pagination from '@/components/Pagination.vue'
+import TicketsFilters from '@/components/tickets/TicketsFilters.vue'
 import TicketTable from '@/components/tickets/TicketTable.vue'
 
-import TicketsFilters from '@/components/tickets/TicketsFilters.vue'
-import tickets from '@/routes/tickets'
-import Pagination from '@/components/Pagination.vue'
 import { Button } from '@/components/ui/button'
-import { Plus } from '@lucide/vue'
+import ticketsRoute from '@/routes/tickets'
 
 defineOptions({
   layout: {
     breadcrumbs: [
       {
         title: 'Tickets',
-        href: tickets.index(),
+        href: ticketsRoute.index(),
       },
       
     ],
@@ -78,7 +78,7 @@ const props = defineProps<Props>()
           Manage and track support tickets.
         </p>
       </div>
-        <Link :href="tickets.create()">
+        <Link :href="ticketsRoute.create()">
           <Button class="cursor-pointer">
               <Plus class="mr-2 h-4 w-4" />
               Create Ticket
@@ -86,7 +86,7 @@ const props = defineProps<Props>()
         </Link>
       
     </div>
-    <TicketsFilters />
+    <!-- <TicketsFilters /> -->
 
     <TicketTable :tickets="props.tickets.data" />
     <Pagination :links="props.tickets.links" />

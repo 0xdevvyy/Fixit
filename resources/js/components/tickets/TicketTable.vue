@@ -1,15 +1,10 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3'
+import { Eye, MoreHorizontal, Pencil, Trash2 } from '@lucide/vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 import {
   Table,
@@ -19,8 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Eye, MoreHorizontal, Pencil, Trash2 } from '@lucide/vue'
 
+
+import ticketsRoute from '@/routes/tickets'
+// import { show } from '@/actions/App/Http/Controllers/TicketController'
 
 interface Ticket {
   id: number
@@ -57,6 +54,10 @@ const priorityVariant = (priority: string) => {
     default:
       return 'outline'
   }
+}
+
+const testing = () => {
+  console.log('click');
 }
 
 const statusVariant = (status: string) => {
@@ -100,7 +101,7 @@ const statusVariant = (status: string) => {
             v-for="ticket in tickets"
             :key="ticket.id"
           >
-
+            <!-- <pre>{{ ticketsRoute.show(ticket.id) }}</pre> -->
             <TableCell class="font-medium">
               {{ ticket.ticket_number }}
             </TableCell>
@@ -141,12 +142,15 @@ const statusVariant = (status: string) => {
             <TableCell>
                 <div class="flex items-center justify-center gap-2 ">
                     <Button
+                        as-child
                         variant="outline"
                         size="sm"
                         class="cursor-pointer"
                         >
-                        <Eye class="mr-2 h-4 w-4" />
-                        View
+                        <Link :href="ticketsRoute.show(ticket.id)">
+                          <Eye class="mr-2 h-4 w-4" />
+                          View
+                        </Link>
                     </Button>
 
                     <Button
