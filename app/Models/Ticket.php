@@ -45,7 +45,7 @@ class Ticket extends Model
     }
 
 
-    public function buildings(): BelongsTo {
+    public function building(): BelongsTo {
         return $this->belongsTo(Building::class);
     }
 

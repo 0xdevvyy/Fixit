@@ -1,16 +1,5 @@
 <script setup lang="ts">
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import { dashboard } from '@/routes';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card'
-
 import {
     Ticket,
     CircleCheckBig,
@@ -18,9 +7,18 @@ import {
     Hammer,
     Plus,
 } from '@lucide/vue'
-
-import { Button } from '@/components/ui/button';
 import { computed } from 'vue';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+
+} from '@/components/ui/card'
+import { dashboard } from '@/routes';
+
+
 import tickets from '@/routes/tickets';
 
 defineOptions({

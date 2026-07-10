@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { Head, useForm } from '@inertiajs/vue3';
 import TicketForm from '@/components/tickets/TicketForm.vue';
 import Button from '@/components/ui/button/Button.vue';
+import { CardContent } from '@/components/ui/card';
 import Card from '@/components/ui/card/Card.vue';
+import CardHeader from '@/components/ui/card/CardHeader.vue';
+import CardTitle from '@/components/ui/card/CardTitle.vue';
 import tickets from '@/routes/tickets';
-import { useForm } from '@inertiajs/vue3';
 
     defineOptions({
         layout: {
@@ -45,7 +48,7 @@ import { useForm } from '@inertiajs/vue3';
 </script>
 
 <template>
-    
+    <Head title="Create Ticket" />
 
   <div class="container mx-auto p-6">
 
@@ -77,6 +80,7 @@ import { useForm } from '@inertiajs/vue3';
                             Fill in the details below to create a new support ticket.
                         </p>
                     </CardHeader>
+                    <CardContent>
                     <TicketForm
                         :form="form"
                         :categories="props.categories"
@@ -90,6 +94,7 @@ import { useForm } from '@inertiajs/vue3';
                             Create Ticket
                         </Button>
                     </div>
+                    </CardContent>
                 </Card>
             </form>
 

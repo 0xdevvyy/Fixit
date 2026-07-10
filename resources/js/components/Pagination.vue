@@ -13,18 +13,28 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-2 mt-4">
-    <Component
-      :is="link.url ? Link : 'span'"
+  <div class="mt-4 flex items-center justify-center gap-2">
+    <template
       v-for="link in links"
       :key="link.label"
-      :href="link.url ?? ''"
-      v-html="link.label"
-      class="rounded-md border px-3 py-2 text-sm"
-      :class="{
-        'pointer-events-none text-muted-foreground': !link.url,
-        'bg-primary text-primary-foreground': link.active,
-      }"
-    />
+    >
+      <Link
+        v-if="link.url"
+        :href="link.url"
+        class="rounded-md border px-3 py-2 text-sm"
+        :class="{
+          'bg-primary text-primary-foreground': link.active,
+        }"
+      >
+        <span v-html="link.label" />
+      </Link>
+
+      <span
+        v-else
+        class="pointer-events-none rounded-md border px-3 py-2 text-sm text-muted-foreground"
+      >
+        <span v-html="link.label" />
+      </span>
+    </template>
   </div>
 </template>

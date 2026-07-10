@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import Input from '@/components/ui/input/Input.vue'
+import { Label } from '@/components/ui/label'
 // import Textarea from '@/components/ui/textarea/Textarea.vue'
 
 import {
@@ -12,7 +13,7 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 
-defineProps({
+const props = defineProps({
     form: {
         type: Object,
         required: true,
@@ -38,10 +39,11 @@ defineProps({
         default: () => [],
     },
 })
+const form = computed(() => props.form)
 </script>
 
 <template>
-    <hr />
+    <hr class="mb-4"/>
 
     <CardContent class="space-y-6">
         <!-- Title -->

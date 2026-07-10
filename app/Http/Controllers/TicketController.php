@@ -23,8 +23,9 @@ class TicketController extends Controller
      */
     public function index(#[CurrentUser()] User $user, TicketService $ticket)
     {
+        // dd($ticket->data($user));
         return Inertia::render('ticket/Index', $ticket->data($user));
-        // dd(Auth::user()->assignedTickets()->latest()->paginate());
+        
     }
 
     /**
@@ -77,7 +78,31 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        // dd($ticket);
+         $ticket->load(['reporter', 'assignedTo', 'building']);
+        return Inertia::render('ticket/Show', [
+            'ticket' => [
+                'id' => $ticket->id,
+                'title' => $ticket->title,
+                'description' => $ticket->description,
+                'category' => $ticket->category,
+                'priority' => $ticket->priority,
+                'status' => $ticket->status,
+                'room' => $ticket->room,
+                'ticket_number' => $ticket->ticket_number,
+
+                'reporter' => $ticket->reporter?->name,
+                'assigned_to' => $ticket->assignedTo?->name,
+                'building' => $ticket->building?->name,
+
+                'assigned_at' => $ticket->assigned_at,
+                'accepted_at' => $ticket->accepted_at,
+                'completed_at' => $ticket->completed_at,
+                'closed_at' => $ticket->closed_at,
+                'created_at' => $ticket->created_at->format('F j, Y'),
+            ],
+        ]);
+        // dd('this is tickets');
     }
 
     /**
