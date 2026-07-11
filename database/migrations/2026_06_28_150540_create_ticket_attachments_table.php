@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('image_status'); //before-after
             $table->string('image_path');
             $table->timestamps();
+
+            $table->unique(['ticket_id', 'image_status']);
         });
     }
 

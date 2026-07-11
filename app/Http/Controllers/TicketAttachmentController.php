@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Ticket\Attachment\AfterUploadAction;
+use App\Actions\Ticket\Attachment\BeforeUploadAction;
 use App\Models\TicketAttachment;
 use App\Http\Requests\StoreTicketAttachmentRequest;
 use App\Http\Requests\UpdateTicketAttachmentRequest;
+use App\Models\Ticket;
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 
 class TicketAttachmentController extends Controller
 {
@@ -27,9 +34,28 @@ class TicketAttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTicketAttachmentRequest $request)
+    public function store(
+        StoreTicketAttachmentRequest $request,
+        #[CurrentUser()] User $user, 
+        Ticket $ticket,
+        AfterUploadAction $action,
+        BeforeUploadAction $beforeAction,
+        )
     {
-        //
+        // dd($request->hasFile('after_image'));
+        if($request->hasFile('after_image')){
+            $action->upload($request->validated(), $user, $ticket);
+        }
+        if($request->hasFile('before_image')){
+            $beforeAction->upload($request->validated(), $user, $ticket);
+        }
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'Successfully Uploaded a Photo'
+        ]);
+
+        // return redirect('tickets.show');
     }
 
     /**
