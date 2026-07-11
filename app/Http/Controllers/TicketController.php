@@ -78,8 +78,8 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        // dd($ticket);
-         $ticket->load(['reporter', 'assignedTo', 'building']);
+        // dd($ticket); next todo will add this in a resource
+        $ticket->load(['reporter', 'assignedTo', 'building', 'afterAttachment', 'beforeAttachment']);
         return Inertia::render('ticket/Show', [
             'ticket' => [
                 'id' => $ticket->id,
@@ -94,6 +94,9 @@ class TicketController extends Controller
                 'reporter' => $ticket->reporter?->name,
                 'assigned_to' => $ticket->assignedTo?->name,
                 'building' => $ticket->building?->name,
+
+                'after' => $ticket->afterAttachment?->image_path,
+                'before' => $ticket->beforeAttachment?->image_path,
 
                 'assigned_at' => $ticket->assigned_at,
                 'accepted_at' => $ticket->accepted_at,

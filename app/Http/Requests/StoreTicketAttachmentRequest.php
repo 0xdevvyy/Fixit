@@ -12,7 +12,7 @@ class StoreTicketAttachmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,20 @@ class StoreTicketAttachmentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+       return [
+            'before_image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:5120', // 5 MB
+            ],
+
+            'after_image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:5120',
+            ],
         ];
     }
 }

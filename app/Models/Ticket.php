@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 // #[Fillable([''])]
 class Ticket extends Model
@@ -52,5 +53,20 @@ class Ticket extends Model
 
     public function logs(): HasMany {
         return $this->hasMany(TicketLog::class);
+    }
+
+
+    public function attachments(): HasMany {
+        return $this->hasMany(TicketAttachment::class);
+    }
+
+    public function beforeAttachment(): HasOne{
+        return $this->hasOne(TicketAttachment::class)
+            ->where('image_status', 'before');
+    }
+
+    public function afterAttachment(): HasOne{
+        return $this->hasOne(TicketAttachment::class)
+            ->where('image_status', 'after');
     }
 }
