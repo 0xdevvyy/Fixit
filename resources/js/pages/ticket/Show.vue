@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { ArrowRight } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import TicketAfterUpload from '@/components/tickets/TicketAfterUpload.vue';
@@ -9,6 +9,8 @@ import TicketPhotos from '@/components/tickets/TicketPhotos.vue';
 import TicketTimeline from '@/components/tickets/TicketTimeline.vue';
 import Button from '@/components/ui/button/Button.vue';
 import tickets from '@/routes/tickets';
+import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
+
 
     const props = defineProps<{
         ticket: object
@@ -77,6 +79,10 @@ import tickets from '@/routes/tickets';
             },
         })
     }
+
+    function acceptTicket() {
+        form.post(`/tickets/${props.ticket.id}/accept`)
+    }
     
 </script>
 
@@ -90,15 +96,27 @@ import tickets from '@/routes/tickets';
             <div class="lg:col-span-2 mb-2">
                 <TicketInfo
                     :ticket="ticket"
+                    
                 />
                  
+                <pre>{{ ticket }}</pre>
             </div>
 
             <div>
                 <TicketTimeline
                     :ticket="ticket"
                 />
+                <div
+                    v-if="user.role === 'admin' && ticket.status === 'pending'"
+                    class="flex justify-end my-2"
+                >
+                    <TicketAcceptDialog
+                        @accept="acceptTicket"
+                    />
+                </div>
+                
             </div>
+            
             
             <!-- <TicketPhotos class="space-y-6  col-span-3" v-show="user.role === 'maintenance'"/> -->
             <!-- Upload Section -->

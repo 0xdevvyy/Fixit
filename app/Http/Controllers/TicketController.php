@@ -98,11 +98,11 @@ class TicketController extends Controller
                 'after' => $ticket->afterAttachment?->image_path,
                 'before' => $ticket->beforeAttachment?->image_path,
 
-                'assigned_at' => $ticket->assigned_at,
-                'accepted_at' => $ticket->accepted_at,
-                'completed_at' => $ticket->completed_at,
-                'closed_at' => $ticket->closed_at,
-                'created_at' => $ticket->created_at->format('F j, Y'),
+                'assigned_at' => $ticket->assigned_at?->format('M d, Y'),
+                'accepted_at' => $ticket->accepted_at?->format('M d, Y'),
+                'completed_at' => $ticket->completed_at?->format('M d, Y'),
+                'closed_at' => $ticket->closed_at?->format('M d, Y'),
+                'created_at' => $ticket->created_at->format('M d, Y'),
             ],
         ]);
         // dd('this is tickets');

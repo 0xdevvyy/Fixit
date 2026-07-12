@@ -24,6 +24,10 @@ class Ticket extends Model
         'category' => TicketCategory::class,
         'status' => TicketStatus::class,
         'priority' => TicketPriority::class,
+        'assigned_at' => 'datetime',
+        'accepted_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'closed_at' => 'datetime',
 
     ];
 
