@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/ui/card'
-import TicketPriorityBadge from './TicketPriorityBadge.vue';
 import TicketBadge from './TicketBadge.vue';
+import TicketPriorityBadge from './TicketPriorityBadge.vue';
 
 
 defineProps<{

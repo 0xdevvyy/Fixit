@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { Upload, X } from '@lucide/vue'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 
 const props = defineProps<{
@@ -18,7 +18,9 @@ const preview = computed(() => {
 function uploadImage(event: Event) {
     const target = event.target as HTMLInputElement
 
-    if (!target.files?.length) return
+    if (!target.files?.length) {
+return
+}
 
     props.form.before_image = target.files[0]
 }
