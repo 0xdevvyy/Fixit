@@ -15,6 +15,8 @@ class AcceptAction
                 'status' => TicketStatus::ASSIGNED,
                 'assigned_at' => now(),
             ]);
+
+            //need to notify the reporter and maintenance
         });
     }
 }

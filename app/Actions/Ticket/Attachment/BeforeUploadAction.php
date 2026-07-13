@@ -3,6 +3,7 @@
 
 namespace App\Actions\Ticket\Attachment;
 
+use App\Actions\Ticket\RepairAction;
 use App\Enum\TicketAttachmentStatus;
 use App\Models\Ticket;
 use App\Models\User;
@@ -10,8 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class BeforeUploadAction {
 
+
+    public function __construct(protected RepairAction $start)
+    {
+        // $this->start;
+    }
+
     public function upload(array $data,User $user, Ticket $ticket ){
         // dd($data['before_image']->store('tickets', 'public'));
+        
         DB::transaction(function () use ($data,$user,$ticket){
             $folder = now()->format('Y/m'); //tickets/2026/07
 
@@ -33,6 +41,10 @@ class BeforeUploadAction {
                 'image_status' => TicketAttachmentStatus::BEFORE,
                 'image_path'   => $path,
             ]);
+           
+            $this->start->repair($ticket);
+            
         });
+        
     }
 }

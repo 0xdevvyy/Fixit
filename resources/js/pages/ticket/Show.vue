@@ -98,8 +98,7 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
                     :ticket="ticket"
                     
                 />
-                 
-                <pre>{{ ticket }}</pre>
+                
             </div>
 
             <div>
