@@ -7,7 +7,6 @@ use App\Enum\RoleEnum;
 use App\Enum\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -34,7 +33,7 @@ class CreateTicket {
                     : TicketStatus::PENDING,
 
                  'assigned_at' => $user->role === RoleEnum::ADMIN
-                    ? Carbon::now()
+                    ? now()
                     : null,
             ]);
             

@@ -3,12 +3,19 @@
 
 namespace App\Actions\Ticket\Attachment;
 
+use App\Actions\Ticket\CompletedAction;
 use App\Enum\TicketAttachmentStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class AfterUploadAction {
+
+
+    public function __construct(protected CompletedAction $action)
+    {
+       
+    }
 
     public function upload(array $data,User $user, Ticket $ticket ){
         // dd($data['after_image']->store('tickets', 'public'));
@@ -33,6 +40,8 @@ class AfterUploadAction {
                 'image_status' => TicketAttachmentStatus::AFTER,
                 'image_path'   => $path,
             ]);
+
+            $this->action->complete($ticket);
         });
     }
 }
