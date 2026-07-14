@@ -46,6 +46,7 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
 
     const showBeforeUpload = computed(() =>
         user.value.role === 'maintenance' &&
+         props.ticket.status === 'assigned' &&
         !hasBefore.value
     );
 
@@ -98,7 +99,6 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
                     :ticket="ticket"
                     
                 />
-                
             </div>
 
             <div>
@@ -148,19 +148,7 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
                             v-if="showBeforeUpload"
                             :form="form"
                         />
-
-                        <!-- Arrow -->
-                        <div
-                            class="hidden items-center justify-center md:flex"
-                            v-if="showBeforeUpload || showAfterUpload"
-                        >
-                            <div
-                                v-if="showBeforeUpload"
-                                class="flex h-12 w-12 items-center justify-center rounded-full border bg-background shadow-sm"
-                            >
-                                <ArrowRight class="h-5 w-5" />
-                            </div>
-                        </div>
+                       
 
                         <!-- AFTER -->
                         <TicketAfterUpload

@@ -4,6 +4,7 @@ namespace App\Actions\Ticket;
 
 use App\Enum\TicketStatus;
 use App\Models\Ticket;
+use App\Notifications\TicketAssignedNotification;
 use Illuminate\Support\Facades\DB;
 
 class AcceptAction
@@ -17,6 +18,10 @@ class AcceptAction
             ]);
 
             //need to notify the reporter and maintenance
+
+            $ticket->assignedTo?->notify(
+                new TicketAssignedNotification($ticket)
+            );
         });
     }
 }

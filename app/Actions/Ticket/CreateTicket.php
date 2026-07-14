@@ -7,6 +7,7 @@ use App\Enum\RoleEnum;
 use App\Enum\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Notifications\TicketAssignedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -14,11 +15,17 @@ use function Illuminate\Support\now;
 
 class CreateTicket {
 
+
+    public function __construct(protected AcceptAction $action)
+    {
+       
+    }
+
     public function execute(array $data, User $user){
 
         // dd($data);
        DB::transaction(function () use ($data, $user){
-            $user->reportedTickets()->create([
+            $ticket = $user->reportedTickets()->create([
                 'title' => $data['title'],
                 'ticket_number'=> $data['ticket_number'] ?? $this->generateTicketNumber(),
                 'assigned_to' => $data['assigned_to'],
@@ -27,15 +34,11 @@ class CreateTicket {
                 'category' => $data['category'],
                 'priority' => $data['priority'],
                 'description' => $data['description'],
-
-                'status' => $user->role === RoleEnum::ADMIN
-                    ? TicketStatus::ASSIGNED
-                    : TicketStatus::PENDING,
-
-                 'assigned_at' => $user->role === RoleEnum::ADMIN
-                    ? now()
-                    : null,
+      
             ]);
+            if ($user->role === RoleEnum::ADMIN) {
+                $this->action->confirm($ticket);
+            }
             
        });
     }
