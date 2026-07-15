@@ -4,6 +4,7 @@ namespace App\Actions\Ticket;
 
 use App\Enum\TicketStatus;
 use App\Models\Ticket;
+use App\Notifications\TicketCompletedNotification;
 use Illuminate\Support\Facades\DB;
 
 class CompletedAction {
@@ -16,6 +17,10 @@ class CompletedAction {
                 'completed_at' => now(),
             ]);
             //need to notify the reporter that the ticket is completed(resolved)
+
+            $ticket->reporter?->notify(
+                new TicketCompletedNotification($ticket)
+            );
         });
     }
 }
