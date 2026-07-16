@@ -20,6 +20,8 @@ import { dashboard } from '@/routes';
 
 
 import tickets from '@/routes/tickets';
+import TicketCharts from '@/components/tickets/TicketCharts.vue';
+import TicketStatusChart from '@/components/tickets/TicketStatusChart.vue';
 
 defineOptions({
     layout: {
@@ -33,12 +35,26 @@ defineOptions({
 });
 
 
-interface MonthlyTicket {
-    month: string
+interface TicketPerDay {
+    date: string
     total: number
+}
+
+interface StatusBreakdown {
     open: number
-    inProgress: number
+    in_progress: number
     completed: number
+}
+
+interface TicketsByBuilding {
+    name: string
+    total: number
+}
+
+interface DashboardCharts {
+    ticketsPerDay: TicketPerDay[]
+    statusBreakdown: StatusBreakdown
+    ticketsByBuilding: TicketsByBuilding[]
 }
 
 
@@ -52,7 +68,7 @@ interface DashboardStats {
 interface Props {
     title: string
     stats: DashboardStats
-    charts: MonthlyTicket[]
+    charts: DashboardCharts
 }
 
 const props = defineProps<Props>()
@@ -180,57 +196,11 @@ const user = computed(()=> page.props.auth.user)
                 </CardHeader>
 
                 <CardContent>
-                    <div
-                        class="flex h-72 items-center justify-center rounded-md border border-dashed"
-                    >
-                        Chart Placeholder
-                    </div>
+                    <TicketCharts :charts="props.charts"/>
                 </CardContent>
             </Card>
-
-            <!-- Announcements, this also -->
-            <Card>
-                <CardHeader>
-                    <CardTitle>Recent Announcements</CardTitle>
-                </CardHeader>
-
-                <CardContent class="space-y-3">
-                    <div
-                        v-for="i in 3"
-                        :key="i"
-                        class="flex gap-3"
-                    >
-                        <div
-                            class="h-12 w-12 rounded-md bg-muted"
-                        />
-
-                        <div class="flex-1 space-y-2">
-                            <div class="h-4 w-3/4 rounded bg-muted" />
-                            <div class="h-3 w-1/2 rounded bg-muted" />
-                        </div>
-                    </div>
-
-                    <Button class="w-full" variant="outline">
-                        View All Announcements
-                    </Button>
-                </CardContent>
-            </Card>
-
+            <!--Tickets Chart -->            
+            <TicketStatusChart  :status-breakdown="props.charts.statusBreakdown" />
         </div>
-
-        <!-- Recent Tickets -->
-        <Card>
-            <CardHeader>
-                <CardTitle>Recent Tickets</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-                <div
-                    class="flex h-72 items-center justify-center rounded-md border border-dashed"
-                >
-                    {{ completedThisMonth }}
-                </div>
-            </CardContent>
-        </Card>  
     </div>
 </template>

@@ -35,7 +35,13 @@ abstract class DashboardChartsQuery
             ])
             ->groupBy('date')
             ->orderBy('date')
-            ->get();
+            ->get()
+            ->map(fn ($item) => [
+                'date' => $item->date,
+                'total' => (int) $item->total,
+            ])
+            ->values()
+            ->toArray();
     }
 
     protected function statusBreakdown(?User $user, CarbonInterface $month): array
@@ -67,7 +73,13 @@ abstract class DashboardChartsQuery
             ])
             ->groupBy('buildings.id', 'buildings.name')
             ->orderByDesc('total')
-            ->get();
+            ->get()
+            ->map(fn ($item) => [
+                'name' => $item->name,
+                'total' => (int) $item->total,
+            ])
+            ->values()
+            ->toArray();
     }
 
   
