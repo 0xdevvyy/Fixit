@@ -42,7 +42,9 @@ class DashboardService
             RoleEnum::TEACHER => [
                 'title' => 'Teacher Dashboard',
                 'stats' => $this->teacherStats->getTeacherStats($user),
-                'charts' =>  $this->teacherCharts->getCharts($user)
+                'charts' =>  $this->teacherCharts->getCharts($user),
+
+                // dd($this->teacherCharts->getCharts($user)),
                 
             ],
             RoleEnum::MAINTENANCE => [

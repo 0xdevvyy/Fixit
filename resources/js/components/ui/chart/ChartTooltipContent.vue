@@ -91,7 +91,11 @@ const tooltipLabel = computed(() => {
                 {{ tooltipLabel }}
               </div>
               <span class="text-muted-foreground">
-                {{ itemConfig?.label || value }}
+                {{
+                  props.nameKey
+                    ? props.payload[props.nameKey]
+                    : itemConfig?.label || value
+                }}
               </span>
             </div>
             <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
