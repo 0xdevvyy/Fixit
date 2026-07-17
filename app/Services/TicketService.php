@@ -9,6 +9,7 @@ use App\Enum\TicketPriority;
 use App\Enum\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Support\Facades\Request;
 
 class TicketService {
 
@@ -22,7 +23,13 @@ class TicketService {
             RoleEnum::ADMIN => [
                 //get all tickets paginate 10 
                 'tickets' => Ticket::with(['reporter', 'assignedTo'])
+                    
+                    ->when(Request::input('search'), function ($query, $search){
+                        $query->where('ticket_number', 'like', '%' . $search . '%');
+                    })
+                    ->latest()
                     ->paginate(10)
+                    ->withQueryString()
                     ->through(fn($ticket) => [
                         'id' => $ticket->id,
                         'title' => $ticket->title,
@@ -42,6 +49,9 @@ class TicketService {
                 //will add all of this into a query class for now it is just testing if its working
                 'tickets' => $user->reportedTickets()
                     ->with(['reporter','assignedTo'])
+                    ->when(Request::input('search'), function ($query, $search){
+                        $query->where('ticket_number', 'like', '%' . $search . '%');
+                    })
                     ->paginate()
                     ->through(fn($ticket) => [
                         'id' => $ticket->id,
@@ -61,6 +71,9 @@ class TicketService {
                 //will add a query, and in the front end a status button 
                 'tickets' => $user->assignedTickets()
                     ->with(['reporter','assignedTo'])
+                    ->when(Request::input('search'), function ($query, $search){
+                        $query->where('ticket_number', 'like', '%' . $search . '%');
+                    })
                     ->paginate(10)
                     ->through(fn($ticket) => [
                         'id' => $ticket->id,
