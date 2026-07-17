@@ -7,6 +7,8 @@ use App\Enum\RoleEnum;
 use App\Enum\TicketCategory;
 use App\Enum\TicketPriority;
 use App\Enum\TicketStatus;
+use App\Http\Resources\TicketCollection;
+use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\Request;
@@ -21,32 +23,20 @@ class TicketService {
     public function data(User $user): array {
         return match ($user->role){
             RoleEnum::ADMIN => [
-                //get all tickets paginate 10 
-                'tickets' => Ticket::with(['reporter', 'assignedTo'])
-                    
-                    ->when(Request::input('search'), function ($query, $search){
-                        $query->where('ticket_number', 'like', '%' . $search . '%');
-                    })
-                    ->latest()
-                    ->paginate(10)
-                    ->withQueryString()
-                    ->through(fn($ticket) => [
-                        'id' => $ticket->id,
-                        'title' => $ticket->title,
-                        'description' => $ticket->description,
-                        'category' => $ticket->category,
-                        'priority' => $ticket->priority,
-                        'room' => $ticket->room,
-                        'ticket_number' => $ticket->ticket_number,
-                        'status' => $ticket->status,
-                        'reporter' => $ticket->reporter->name,
-                        'assigned_to' => $ticket->assignedTo?->name,
-                    ]),
+                //will add the query, like this $query->filter(new QueryBy($request->query(status)))
+                $tickets = TicketResource::collection(
+                        Ticket::with(['reporter', 'assignedTo'])
+                            ->when(request('search'), function ($query, $search) {
+                                $query->where('ticket_number', 'like', "%{$search}%");
+                            })
+                            ->latest()
+                            ->paginate(10)
+                            ->withQueryString()
+                    ),
+                'tickets' => new TicketCollection($tickets),
                 
             ],  
             RoleEnum::TEACHER => [
-                //get all recently created tickets
-                //will add all of this into a query class for now it is just testing if its working
                 'tickets' => $user->reportedTickets()
                     ->with(['reporter','assignedTo'])
                     ->when(Request::input('search'), function ($query, $search){
@@ -67,8 +57,7 @@ class TicketService {
                     ]),
             ],
             RoleEnum::MAINTENANCE => [
-                //get all tickets that is assigned to me 
-                //will add a query, and in the front end a status button 
+
                 'tickets' => $user->assignedTickets()
                     ->with(['reporter','assignedTo'])
                     ->when(Request::input('search'), function ($query, $search){
