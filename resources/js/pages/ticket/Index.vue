@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 
 import { Plus } from '@lucide/vue'
 import Pagination from '@/components/Pagination.vue'
@@ -8,6 +8,8 @@ import TicketTable from '@/components/tickets/TicketTable.vue'
 
 import { Button } from '@/components/ui/button'
 import ticketsRoute from '@/routes/tickets'
+import { ref, watch } from 'vue'
+
 
 defineOptions({
   layout: {
@@ -61,6 +63,14 @@ interface Props {
 
 const props = defineProps<Props>()
 
+let search = ref('');
+
+watch(search , value => {
+  router.get('/tickets', { search:value}, {
+    preserveState: true
+  })
+});
+
 
 </script>
 
@@ -86,7 +96,7 @@ const props = defineProps<Props>()
         </Link>
       
     </div>
-    <!-- <TicketsFilters /> -->
+    <TicketsFilters v-model="search"/>
 
     <TicketTable :tickets="props.tickets.data" />
     <Pagination :links="props.tickets.links" />
