@@ -24,61 +24,56 @@ class TicketService {
         return match ($user->role){
             RoleEnum::ADMIN => [
                 //will add the query, like this $query->filter(new QueryBy($request->query(status)))
-                $tickets = TicketResource::collection(
+                'tickets' => TicketResource::collection(
                         Ticket::with(['reporter', 'assignedTo'])
                             ->when(request('search'), function ($query, $search) {
                                 $query->where('ticket_number', 'like', "%{$search}%");
                             })
+                             ->when(
+                                TicketStatus::tryFrom(request('status')),
+                                fn ($query) => $query->where('status', request('status'))
+                            )
                             ->latest()
                             ->paginate(10)
                             ->withQueryString()
                     ),
-                'tickets' => new TicketCollection($tickets),
+                'filters' => request()->only(['search','status']),
+                'filtersOption' => $this->filters(),
                 
             ],  
             RoleEnum::TEACHER => [
-                'tickets' => $user->reportedTickets()
-                    ->with(['reporter','assignedTo'])
-                    ->when(Request::input('search'), function ($query, $search){
-                        $query->where('ticket_number', 'like', '%' . $search . '%');
-                    })
+                'tickets' => TicketResource::collection(
+                    $user->reportedTickets()
+                        ->when(request('search'), function ($query, $search){
+                            $query->where('ticket_number', 'like', '%' . $search . '%');
+                        })
+                        ->when(
+                            TicketStatus::tryFrom(request('status')),
+                            fn ($query) => $query->where('status', request('status'))
+                        )
+                    ->latest()
                     ->paginate()
-                    ->through(fn($ticket) => [
-                        'id' => $ticket->id,
-                        'title' => $ticket->title,
-                        'description' => $ticket->description,
-                        'category' => $ticket->category,
-                        'priority' => $ticket->priority,
-                        'room' => $ticket->room,
-                        'ticket_number' => $ticket->ticket_number,
-                        'status' => $ticket->status,
-                        'reporter' => $ticket->reporter->name,
-                        'assigned_to' => $ticket->assignedTo?->name,
-                    ]),
+                    ->withQueryString()
+                ),
+                'filters' => request()->only(['search','status']),
+                'filtersOption' => $this->filters(),
             ],
             RoleEnum::MAINTENANCE => [
-
-                'tickets' => $user->assignedTickets()
-                    ->with(['reporter','assignedTo'])
-                    ->when(Request::input('search'), function ($query, $search){
-                        $query->where('ticket_number', 'like', '%' . $search . '%');
-                    })
-                    ->paginate(10)
-                    ->through(fn($ticket) => [
-                        'id' => $ticket->id,
-                        'title' => $ticket->title,
-                        'description' => $ticket->description,
-                        'category' => $ticket->category,
-                        'priority' => $ticket->priority,
-                        'room' => $ticket->room,
-                        'ticket_number' => $ticket->ticket_number,
-                        'status' => $ticket->status,
-                        'reporter' => $ticket->reporter->name,
-                        'assigned_to' => $ticket->assignedTo->name,
-                    ]),
-                    // ->whereIn('status', ['open', 'in_progress'])
-                    // ->latest()
-                    // ->paginate(10),
+                'tickets' => TicketResource::collection(
+                    $user->assignedTickets()
+                        ->when(request('search'), function ($query, $search){
+                            $query->where('ticket_number', 'like', '%' . $search . '%');
+                        })
+                         ->when(
+                            TicketStatus::tryFrom(request('status')),
+                            fn ($query) => $query->where('status', request('status'))
+                        )
+                        ->latest()
+                        ->paginate(10)
+                        ->withQueryString()
+                ),
+                'filters' => request()->only(['search','status']),
+                'filtersOption' => $this->filters(),
             ],
         };
     }

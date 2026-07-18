@@ -31,7 +31,7 @@ let emit = defineEmits(['update:modelValue'])
             placeholder="Search Tickets#...."
             class="pl-9"
             @keyup="emit('update:modelValue', $event.target.value)"
-            v-text="modelValue"
+            :model-value="modelValue"
         />
     </div>
 
