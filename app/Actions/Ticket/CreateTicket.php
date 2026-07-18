@@ -27,7 +27,7 @@ class CreateTicket {
        DB::transaction(function () use ($data, $user){
             $ticket = $user->reportedTickets()->create([
                 'title' => $data['title'],
-                'ticket_number'=> $data['ticket_number'] ?? $this->generateTicketNumber(),
+                'ticket_number'=> $this->generateTicketNumber(),
                 'assigned_to' => $data['assigned_to'],
                 'building_id' => $data['building_id'],
                 'room' => $data['room'],
