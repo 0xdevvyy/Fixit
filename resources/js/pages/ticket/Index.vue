@@ -11,6 +11,7 @@ import ticketsRoute from '@/routes/tickets'
 import { reactive, ref, watch } from 'vue'
 import TicketStatus from '@/components/tickets/filters/TicketStatus.vue'
 import TicketsCategory from '@/components/tickets/filters/TicketsCategory.vue'
+import TicketsPriority from '@/components/tickets/filters/TicketsPriority.vue'
 
 
 defineOptions({
@@ -137,8 +138,10 @@ watch(() => query.search, () => {
     </div>
     <div class="flex flex-wrap gap-3">
       <TicketsFilters v-model="query.search"/>
+      <!-- cant i just conditionaly render it? kesa gagawa ako ng tatlong component? -->
       <TicketStatus :options="props.filtersOption.status" v-model="query.status" />
       <TicketsCategory :options="props.filtersOption.category" v-model="query.category" />
+      <TicketsPriority :options="props.filtersOption.priority" v-model="query.priority" />
       <Button class="cursor-pointer" @click="filterTickets">
         <Filter />
         Filter

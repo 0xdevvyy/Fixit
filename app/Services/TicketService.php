@@ -37,6 +37,10 @@ class TicketService {
                                 TicketCategory::tryFrom(request('category')),
                                 fn ($query) => $query->where('category', request('category'))
                             )
+                            ->when(
+                                TicketPriority::tryFrom(request('priority')),
+                                fn ($query) => $query->where('priority', request('priority'))
+                            )
                             ->latest()
                             ->paginate(10)
                             ->withQueryString()
@@ -59,6 +63,10 @@ class TicketService {
                             TicketCategory::tryFrom(request('category')),
                             fn ($query) => $query->where('category', request('category'))
                         )
+                        ->when(
+                            TicketPriority::tryFrom(request('priority')),
+                            fn ($query) => $query->where('priority', request('priority'))
+                        )
                     ->latest()
                     ->paginate()
                     ->withQueryString()
@@ -79,6 +87,10 @@ class TicketService {
                         ->when(
                             TicketCategory::tryFrom(request('category')),
                             fn ($query) => $query->where('category', request('category'))
+                        )
+                        ->when(
+                            TicketPriority::tryFrom(request('priority')),
+                            fn ($query) => $query->where('priority', request('priority'))
                         )
                         ->latest()
                         ->paginate(10)
