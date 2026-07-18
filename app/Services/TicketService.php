@@ -33,11 +33,15 @@ class TicketService {
                                 TicketStatus::tryFrom(request('status')),
                                 fn ($query) => $query->where('status', request('status'))
                             )
+                            ->when(
+                                TicketCategory::tryFrom(request('category')),
+                                fn ($query) => $query->where('category', request('category'))
+                            )
                             ->latest()
                             ->paginate(10)
                             ->withQueryString()
                     ),
-                'filters' => request()->only(['search','status']),
+                'filters' => request()->only(['search','status', 'category', 'priority']),
                 'filtersOption' => $this->filters(),
                 
             ],  
@@ -51,11 +55,15 @@ class TicketService {
                             TicketStatus::tryFrom(request('status')),
                             fn ($query) => $query->where('status', request('status'))
                         )
+                        ->when(
+                            TicketCategory::tryFrom(request('category')),
+                            fn ($query) => $query->where('category', request('category'))
+                        )
                     ->latest()
                     ->paginate()
                     ->withQueryString()
                 ),
-                'filters' => request()->only(['search','status']),
+                'filters' => request()->only(['search','status', 'category', 'priority']),
                 'filtersOption' => $this->filters(),
             ],
             RoleEnum::MAINTENANCE => [
@@ -64,15 +72,19 @@ class TicketService {
                         ->when(request('search'), function ($query, $search){
                             $query->where('ticket_number', 'like', '%' . $search . '%');
                         })
-                         ->when(
+                        ->when(
                             TicketStatus::tryFrom(request('status')),
                             fn ($query) => $query->where('status', request('status'))
+                        )
+                        ->when(
+                            TicketCategory::tryFrom(request('category')),
+                            fn ($query) => $query->where('category', request('category'))
                         )
                         ->latest()
                         ->paginate(10)
                         ->withQueryString()
                 ),
-                'filters' => request()->only(['search','status']),
+                'filters' => request()->only(['search','status', 'category', 'priority']),
                 'filtersOption' => $this->filters(),
             ],
         };

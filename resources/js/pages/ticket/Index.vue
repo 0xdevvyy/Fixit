@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import ticketsRoute from '@/routes/tickets'
 import { reactive, ref, watch } from 'vue'
 import TicketStatus from '@/components/tickets/filters/TicketStatus.vue'
+import TicketsCategory from '@/components/tickets/filters/TicketsCategory.vue'
 
 
 defineOptions({
@@ -137,6 +138,7 @@ watch(() => query.search, () => {
     <div class="flex flex-wrap gap-3">
       <TicketsFilters v-model="query.search"/>
       <TicketStatus :options="props.filtersOption.status" v-model="query.status" />
+      <TicketsCategory :options="props.filtersOption.category" v-model="query.category" />
       <Button class="cursor-pointer" @click="filterTickets">
         <Filter />
         Filter
