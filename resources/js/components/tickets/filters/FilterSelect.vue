@@ -12,6 +12,7 @@
     const props = defineProps({
         options: Array<string>,
         modelValue: String,
+        placeholder: String
     })
 </script>
 
@@ -21,7 +22,7 @@
         :model-value="modelValue" 
         @update:model-value="value => emit('update:modelValue', value)">
         <SelectTrigger class="w-40">
-            <SelectValue placeholder="Status"/>
+            <SelectValue :placeholder="placeholder"/>
         </SelectTrigger>
 
         <SelectContent>
