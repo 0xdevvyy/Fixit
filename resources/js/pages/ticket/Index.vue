@@ -3,15 +3,13 @@ import { Head, Link, router } from '@inertiajs/vue3'
 
 import { Filter, Plus } from '@lucide/vue'
 import Pagination from '@/components/Pagination.vue'
-import TicketsFilters from '@/components/tickets/TicketsFilters.vue'
 import TicketTable from '@/components/tickets/TicketTable.vue'
 
 import { Button } from '@/components/ui/button'
 import ticketsRoute from '@/routes/tickets'
 import { reactive, ref, watch } from 'vue'
-import TicketStatus from '@/components/tickets/filters/TicketStatus.vue'
-import TicketsCategory from '@/components/tickets/filters/TicketsCategory.vue'
-import TicketsPriority from '@/components/tickets/filters/TicketsPriority.vue'
+import FilterSelect from '@/components/tickets/filters/FilterSelect.vue'
+import TicketSearch from '@/components/tickets/filters/TicketSearch.vue'
 
 
 defineOptions({
@@ -137,11 +135,26 @@ watch(() => query.search, () => {
       
     </div>
     <div class="flex flex-wrap gap-3">
-      <TicketsFilters v-model="query.search"/>
-      <!-- cant i just conditionaly render it? kesa gagawa ako ng tatlong component? -->
-      <TicketStatus :options="props.filtersOption.status" v-model="query.status" />
-      <TicketsCategory :options="props.filtersOption.category" v-model="query.category" />
-      <TicketsPriority :options="props.filtersOption.priority" v-model="query.priority" />
+      <TicketSearch v-model="query.search"/>
+      <!-- Status -->
+      <FilterSelect
+          placeholder="Status"
+          :options="props.filtersOption.status"
+          v-model="query.status"
+      />
+      <!-- Priority -->
+      <FilterSelect
+          placeholder="Priority"
+          :options="props.filtersOption.priority"
+          v-model="query.priority"
+      />
+      <!-- Category -->
+      <FilterSelect
+          placeholder="Category"
+          :options="props.filtersOption.category"
+          v-model="query.category"
+      />
+
       <Button class="cursor-pointer" @click="filterTickets">
         <Filter />
         Filter
