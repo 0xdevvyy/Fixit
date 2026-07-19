@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class TicketController extends Controller
@@ -63,6 +64,7 @@ class TicketController extends Controller
     public function store(StoreTicketRequest $request, #[CurrentUser()] User $user, CreateTicket $action)
     {
         // dd($request->validated());
+       
         $action->execute($request->validated(), $user);
 
         Inertia::flash('toast', [
@@ -79,6 +81,7 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         // dd($ticket); next todo will add this in a resource
+        Gate::authorize('view', $ticket);
         $ticket->load(['reporter', 'assignedTo', 'building', 'afterAttachment', 'beforeAttachment']);
         return Inertia::render('ticket/Show', [
             'ticket' => [
