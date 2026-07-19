@@ -12,7 +12,7 @@ class StoreTicketAttachmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; //i can add it in this pero mas gusto ko ilagay sa mga policy yung authorization
     }
 
     /**

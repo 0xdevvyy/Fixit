@@ -106,7 +106,7 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
                     :ticket="ticket"
                 />
                 <div
-                    v-if="user.role === 'admin' && ticket.status === 'pending'"
+                    v-if="user.role === 'admin' && ticket.status === 'open'"
                     class="flex justify-end my-2"
                 >
                     <TicketAcceptDialog

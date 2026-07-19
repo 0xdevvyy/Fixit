@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class TicketAcceptController extends Controller
@@ -15,9 +16,10 @@ class TicketAcceptController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, #[CurrentUser()] User $user, Ticket $ticket): RedirectResponse
+    public function __invoke(Ticket $ticket, #[CurrentUser()] User $user): RedirectResponse
     {
-        //need to add a policy or gate
+        Gate::authorize('accept', $ticket);
+  
         AcceptAction::confirm($ticket);
         Inertia::flash('toast', [
             'type' => 'success',

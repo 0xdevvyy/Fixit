@@ -11,6 +11,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class TicketAttachmentController extends Controller
@@ -42,7 +43,7 @@ class TicketAttachmentController extends Controller
         BeforeUploadAction $beforeAction,
         )
     {
-        // dd($request->hasFile('after_image'));
+        Gate::authorize('upload', $ticket);
         if($request->hasFile('after_image')){
             $action->upload($request->validated(), $user, $ticket);
         }
