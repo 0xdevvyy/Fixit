@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import { Eye, MoreHorizontal, Pencil, Trash2 } from '@lucide/vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import ticketsRoute from '@/routes/tickets'
+import TicketDeleteDialog from './TicketDeleteDialog.vue'
 
 
 import {
@@ -16,7 +18,7 @@ import {
 } from '@/components/ui/table'
 
 
-import ticketsRoute from '@/routes/tickets'
+
 // import { show } from '@/actions/App/Http/Controllers/TicketController'
 
 interface Ticket {
@@ -56,8 +58,8 @@ const priorityVariant = (priority: string) => {
   }
 }
 
-const testing = () => {
-  console.log('click');
+function deleteTicket(ticket: Ticket){
+  router.delete(ticketsRoute.delete(ticket.id))
 }
 
 const statusVariant = (status: string) => {
@@ -75,6 +77,8 @@ const statusVariant = (status: string) => {
       return 'outline'
   }
 }
+
+
 </script>
 
 <template>
@@ -162,14 +166,9 @@ const statusVariant = (status: string) => {
                         Edit
                     </Button>
 
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        class="cursor-pointer"
-                        >
-                        <Trash2 class="mr-2 h-4 w-4" />
-                        Delete
-                    </Button>
+                   <TicketDeleteDialog
+                      @delete="deleteTicket(ticket)"
+                  />
                 </div>
 
             </TableCell>
