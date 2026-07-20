@@ -57,7 +57,7 @@ class TicketPolicy
         }
 
 
-        return Response::denyWithStatus('stauts', 'test', 404);
+        return Response::denyWithStatus(403);
     }
 
     public function accept(User $user): Response {

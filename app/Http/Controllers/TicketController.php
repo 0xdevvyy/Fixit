@@ -13,6 +13,7 @@ use App\Models\Building;
 use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -130,8 +131,16 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(Ticket $ticket): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $ticket);
+        $ticket->delete();
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'Ticket Successfully Deleted!'
+        ]);
+
+        return to_route('tickets.index');
     }
 }

@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
      Route::get('/tickets/create', [TicketController::class,'create'])->name('tickets.create');
      Route::post('/tickets/store', [TicketController::class, 'store'])->name('tickets.store');
      Route::get('/tickets/{ticket}/show', [TicketController::class, 'show'])->name('tickets.show');
+     Route::delete('/tickets/{ticket}/delete', [TicketController::class, 'destroy'])->name('tickets.delete');
 
      Route::post('/tickets/{ticket}/attachment', [TicketAttachmentController::class, 'store'])->name('tickets.attachment.store');
      Route::post('/tickets/{ticket}/accept',TicketAcceptController::class)->name('ticket.accept');
