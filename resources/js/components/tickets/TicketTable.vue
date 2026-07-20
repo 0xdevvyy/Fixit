@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3'
+import { Link, router, usePage } from '@inertiajs/vue3'
 import { Eye, MoreHorizontal, Pencil, Trash2 } from '@lucide/vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { computed } from 'vue'
 
 
 
@@ -78,7 +79,8 @@ const statusVariant = (status: string) => {
   }
 }
 
-
+const page = usePage();
+const user = computed(()=> page.props.auth.user)
 </script>
 
 <template>
@@ -158,6 +160,7 @@ const statusVariant = (status: string) => {
                     </Button>
 
                     <Button
+                       
                         variant="secondary"
                         size="sm"
                         class="cursor-pointer"
@@ -167,8 +170,11 @@ const statusVariant = (status: string) => {
                     </Button>
 
                    <TicketDeleteDialog
+                       v-if="user.role !== 'admin'"
                       @delete="deleteTicket(ticket)"
                   />
+
+                  <!-- <pre>{{ user }}</pre> -->
                 </div>
 
             </TableCell>
