@@ -82,7 +82,7 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
     }
 
     function acceptTicket() {
-        form.post(`/tickets/${props.ticket.id}/accept`)
+        form.patch(`/tickets/${props.ticket.id}/accept`)
     }
     
 </script>
