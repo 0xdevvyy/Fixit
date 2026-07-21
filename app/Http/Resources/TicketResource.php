@@ -25,6 +25,8 @@ class TicketResource extends JsonResource
             'status' => $this->status,
             'reporter' => $this->reporter->name,
             'assigned_to' => $this->assignedTo?->name,
+            'created_at' => $this->created_at,
+            
         ];
     }
 }

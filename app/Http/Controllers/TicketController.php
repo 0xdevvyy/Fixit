@@ -125,7 +125,7 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        //
+        dd('endpoint reached');
     }
 
     /**

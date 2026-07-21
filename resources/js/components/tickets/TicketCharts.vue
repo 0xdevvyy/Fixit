@@ -72,6 +72,10 @@ const filterRange = computed(() => {
         )
     })
 })
+
+const maxTickets = computed(() =>
+  Math.max(...filterRange.value.map(d => d.tickets), 1)
+)
 </script>
 
 <template>
@@ -144,7 +148,7 @@ const filterRange = computed(() => {
           :data="filterRange"
           :svg-defs="svgDefs"
           :margin="{ left: -40 }"
-          :y-domain="[0, 100]" 
+          :y-domain="[0, maxTickets]" 
         >
           <VisArea 
                 :x="(d: Data) => d.date"
@@ -164,7 +168,7 @@ const filterRange = computed(() => {
             :tick-line="false"
             :domain-line="false"
             :grid-line="false"
-            :num-ticks="6"
+            :num-ticks="filterRange.length"
             :tick-format="(d: number, index: number) => {
               const date = new Date(d)
               return date.toLocaleDateString('en-US', {
