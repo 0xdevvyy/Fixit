@@ -81,7 +81,7 @@ class TicketPolicy
     //pag pinasa ko yung $ticket yun ay sa ticket model ngayon naka associate na policy sa model na yun ay eto kaya dito rin sya hahanap na policy, okay gets HAHAHAH
     public function upload(User $user, Ticket $ticket): Response
     {
-        // dd('reached');
+        
         if(
             $user->role === RoleEnum::MAINTENANCE && $ticket->assignedTo->is($user)
         ){

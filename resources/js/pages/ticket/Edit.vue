@@ -95,7 +95,6 @@ import TicketFormEdit from '@/components/tickets/TicketFormEdit.vue';
                     </div>
                     </CardContent>
                 </Card>
-             <pre>{{ props.ticket }}</pre>
             </form>
 
             <!-- Right Sidebar -->
