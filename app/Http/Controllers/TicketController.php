@@ -27,7 +27,7 @@ class TicketController extends Controller
      */
     public function index(#[CurrentUser()] User $user, TicketService $ticket)
     {
-        // dd($ticket->data($user));
+    
         return Inertia::render('ticket/Index', $ticket->data($user));
         
     }
@@ -66,7 +66,6 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request, #[CurrentUser()] User $user, CreateTicket $action)
     {
-        // dd($request->validated());
        
         $action->execute($request->validated(), $user);
 
@@ -120,7 +119,6 @@ class TicketController extends Controller
    public function edit(Ticket $ticket)
     {
         Gate::authorize('edit', $ticket);
-        // dd($ticket);
         $ticket->load(['reporter', 'assignedTo', 'building']);
 
         return Inertia::render('ticket/Edit', [
@@ -136,7 +134,7 @@ class TicketController extends Controller
 
                 'reporter' => $ticket->reporter?->name,
                 
-                'assigned_to' => $ticket->assigned_to,      // ID
+                'assigned_to' => $ticket->assigned_to,    
                 'assigned_to_name' => $ticket->assignedTo?->name,
                 'building' => $ticket->building->id,
                 'building_name' => $ticket->building?->name,

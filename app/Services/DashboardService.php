@@ -36,7 +36,7 @@ class DashboardService
                 'title' => 'Admin Dashboard',
                 'stats' => $this->adminStats->getAdminStats(),
                 'charts' =>  $this->adminCharts->getCharts(),
-                // dd($this->adminCharts->getCharts())
+             
                 
             ],
             RoleEnum::TEACHER => [
@@ -44,7 +44,7 @@ class DashboardService
                 'stats' => $this->teacherStats->getTeacherStats($user),
                 'charts' =>  $this->teacherCharts->getCharts($user),
 
-                // dd($this->teacherCharts->getCharts($user)),
+       
                 
             ],
             RoleEnum::MAINTENANCE => [

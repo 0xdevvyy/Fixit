@@ -33,11 +33,6 @@ class StoreTicketRequest extends FormRequest
             'title' => ['required', 'string', 'min:3', 'max:50'],
             'description' => ['required', 'string', 'min:3', 'max:255'],
 
-            // 'ticket_number' => [
-            //     'required',
-            //     'string',
-            //     'unique:tickets,ticket_number',
-            // ],
 
             'room' => ['nullable', 'string', 'max:50', 'min:3'],
 
