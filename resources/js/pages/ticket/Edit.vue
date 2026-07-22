@@ -7,6 +7,7 @@ import Card from '@/components/ui/card/Card.vue';
 import CardHeader from '@/components/ui/card/CardHeader.vue';
 import CardTitle from '@/components/ui/card/CardTitle.vue';
 import tickets from '@/routes/tickets';
+import TicketFormEdit from '@/components/tickets/TicketFormEdit.vue';
 
     defineOptions({
         layout: {
@@ -23,27 +24,29 @@ import tickets from '@/routes/tickets';
         }
     })
 
+
+
     const props = defineProps<{
-        categories: any[]
-        users: any[]
-        buildings: any[]
-        status: any[]
-        priority: any[]
+        ticket: any
     }>()
 
+
+
     const form = useForm({
-        'title': '',
-        'assigned_to': null,
-        'building_id': null, 
-        'description': '',
-        'room' : '',
-        'category': '',
-        'priority': '',
-        'status': ''
+        'title': props.ticket.title,
+        'assigned_to': props.ticket.assigned_to,
+        'building': props.ticket.building, 
+        'description': props.ticket.description,
+        'room' : props.ticket.room,
+        'category': props.ticket.category,
+        'priority': props.ticket.priority,
+        'status': props.ticket.status,
+        'assigned_to_name': props.ticket.assigned_to_name,   
+        'building_name': props.ticket.building_name,
     })
 
     const submit = () => {
-        form.patch(`/tickets/`)
+        form.patch(`/tickets/${props.ticket.id}/update`)
     }
 </script>
 
@@ -81,21 +84,18 @@ import tickets from '@/routes/tickets';
                         </p>
                     </CardHeader>
                     <CardContent>
-                    <TicketForm
+                    <TicketFormEdit
                         :form="form"
-                        :categories="props.categories"
-                        :users="props.users"
-                        :buildings="props.buildings"
-                        :statuses="props.status"
-                        :priorities="props.priority"
+                        :ticket="props.ticket"
                     />
                     <div class="flex justify-end mt-6">
                         <Button type="submit" :disabled="form.processing" class="cursor-pointer">
-                            Create Ticket
+                            Edit Ticket
                         </Button>
                     </div>
                     </CardContent>
                 </Card>
+             <pre>{{ props.ticket }}</pre>
             </form>
 
             <!-- Right Sidebar -->
@@ -163,7 +163,7 @@ import tickets from '@/routes/tickets';
                                 </span>
 
                                 <span class="font-medium">
-                                    {{ form.building_id || 'Not selected' }}
+                                    {{ form.building || 'Not selected' }}
                                 </span>
                             </div>
 

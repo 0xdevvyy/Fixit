@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Ticket\CreateTicket;
+use App\Actions\Ticket\EditAction;
+use App\Actions\Ticket\UpdateAction;
 use App\Enum\TicketCategory;
 use App\Enum\TicketPriority;
 use App\Enum\TicketStatus;
@@ -115,17 +117,49 @@ class TicketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ticket $ticket)
+   public function edit(Ticket $ticket)
     {
-        //
+        Gate::authorize('edit', $ticket);
+        // dd($ticket);
+        $ticket->load(['reporter', 'assignedTo', 'building']);
+
+        return Inertia::render('ticket/Edit', [
+            'ticket' => [
+                'id' => $ticket->id,
+                'title' => $ticket->title,
+                'description' => $ticket->description,
+                'category' => $ticket->category,
+                'priority' => $ticket->priority,
+                'status' => $ticket->status,
+                'room' => $ticket->room,
+                'ticket_number' => $ticket->ticket_number,
+
+                'reporter' => $ticket->reporter?->name,
+                
+                'assigned_to' => $ticket->assigned_to,      // ID
+                'assigned_to_name' => $ticket->assignedTo?->name,
+                'building' => $ticket->building->id,
+                'building_name' => $ticket->building?->name,
+            ],
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTicketRequest $request, Ticket $ticket)
+    public function update(UpdateTicketRequest $request, Ticket $ticket, UpdateAction $action, #[CurrentUser()] User $user):RedirectResponse
     {
-        dd('endpoint reached');
+        // dd($request->all());
+        Gate::authorize('update', $ticket);
+        
+        $action->handle($request->validated(), $ticket);
+        
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'Ticket Succesfully Updated',
+        ]);
+
+        return to_route('tickets.edit', $ticket->id);
     }
 
     /**

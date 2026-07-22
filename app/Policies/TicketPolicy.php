@@ -32,17 +32,24 @@ class TicketPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function edit(User $user, Ticket $ticket): Response
     {
-        dd('reached');
+        if(
+            $ticket->reporter->is($user) || $ticket->assignedTo->is($user)
+        ){
+            return Response::allow();
+        }
+        return Response::denyWithStatus(403);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Ticket $ticket): bool
+    public function update(User $user, Ticket $ticket): Response
     {
-        return false;
+        //pwede rin palang sa request mo nalang yung policy
+        dd('test');
+
     }
 
     /**
