@@ -160,13 +160,15 @@ const user = computed(()=> page.props.auth.user)
                     </Button>
 
                     <Button
-                       
+                        as-child
                         variant="secondary"
                         size="sm"
                         class="cursor-pointer"
                         >
-                        <Pencil class="mr-2 h-4 w-4" />
-                        Edit
+                        <Link :href="ticketsRoute.edit(ticket.id)">
+                          <Pencil class="mr-2 h-4 w-4" />
+                          Edit
+                        </Link>
                     </Button>
 
                    <TicketDeleteDialog
