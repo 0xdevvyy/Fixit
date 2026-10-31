@@ -15,6 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
      //will group this
      Route::get('/tickets/create', [TicketController::class,'create'])->name('tickets.create');
      Route::post('/tickets/store', [TicketController::class, 'store'])->name('tickets.store');
+     Route::get('/tickets/{ticket}/pdf', [TicketController::class, 'downloadPdf'])->name('tickets.pdf');
      Route::get('/tickets/{ticket}/show', [TicketController::class, 'show'])->name('tickets.show');
      Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
      Route::patch('/tickets/{ticket}/update', [TicketController::class, 'update'])->name('tickets.update');
