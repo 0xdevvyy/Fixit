@@ -69,6 +69,8 @@ interface Props {
     title: string
     stats: DashboardStats
     charts: DashboardCharts
+    reportPeriod: 'monthly' | 'weekly'
+    reportDate: string
 }
 
 const props = defineProps<Props>()
@@ -196,11 +198,18 @@ const user = computed(()=> page.props.auth.user)
                 </CardHeader>
 
                 <CardContent>
-                    <TicketCharts :charts="props.charts"/>
+                    <TicketCharts
+                        :charts="props.charts"
+                        :report-period="props.reportPeriod"
+                        :report-date="props.reportDate"
+                    />
                 </CardContent>
             </Card>
             <!--Tickets Chart -->            
-            <TicketStatusChart  :status-breakdown="props.charts.statusBreakdown" />
+            <TicketStatusChart
+                :status-breakdown="props.charts.statusBreakdown"
+                :report-period="props.reportPeriod"
+            />
         </div>
     </div>
 </template>

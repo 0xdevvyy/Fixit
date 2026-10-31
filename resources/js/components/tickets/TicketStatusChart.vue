@@ -28,6 +28,7 @@ interface Props {
         in_progress: number
         completed: number
     }
+    reportPeriod: 'monthly' | 'weekly'
 }
 
 const props = defineProps<Props>()
@@ -78,7 +79,7 @@ const chartConfig = {
   <Card class="flex flex-col">
     <CardHeader class="items-center pb-0">
       <CardTitle>Tickets Pie Chart</CardTitle>
-      <CardDescription>For this month</CardDescription>
+      <CardDescription>For this {{ reportPeriod === 'monthly' ? 'month' : 'week' }}</CardDescription>
     </CardHeader>
     <CardContent class="flex-1 pb-0">
       <ChartContainer
@@ -109,7 +110,7 @@ const chartConfig = {
     <CardFooter class="flex-col gap-2 text-sm">
 
       <div class="leading-none text-muted-foreground">
-        Showing Tickets Status Beakdown for the month
+        Showing ticket status breakdown for this {{ reportPeriod === 'monthly' ? 'month' : 'week' }}.
       </div>
     </CardFooter>
   </Card>

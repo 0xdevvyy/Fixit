@@ -11,28 +11,34 @@ abstract class DashboardChartsQuery
 {
     abstract protected function baseQuery(?User $user = null): Builder;
 
-    public function getCharts(?User $user = null, ?CarbonInterface $month = null): array
+    public function getCharts(
+        ?User $user = null,
+        ?CarbonInterface $reportStart = null,
+        ?CarbonInterface $reportEnd = null,
+    ): array
     {
-        $month ??= now();
+        $reportStart ??= now()->startOfMonth();
+        $reportEnd ??= $reportStart->copy()->endOfMonth();
 
         return [
-            'ticketsPerDay' => $this->ticketsPerDay($user, $month),
-            'statusBreakdown' => $this->statusBreakdown($user, $month),
-            'ticketsByBuilding' => $this->ticketsByBuilding($user, $month),
+            'ticketsPerDay' => $this->ticketsPerDay($user, $reportStart, $reportEnd),
+            'statusBreakdown' => $this->statusBreakdown($user, $reportStart, $reportEnd),
+            'ticketsByBuilding' => $this->ticketsByBuilding($user, $reportStart, $reportEnd),
         ];
     }
 
-    protected function ticketsPerDay(?User $user, CarbonInterface $month)
+    protected function ticketsPerDay(
+        ?User $user,
+        CarbonInterface $reportStart,
+        CarbonInterface $reportEnd,
+    )
     {
         return $this->baseQuery($user)
             ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as total')
             )
-            ->whereBetween('created_at', [
-                $month->copy()->startOfMonth(),
-                $month->copy()->endOfMonth(),
-            ])
+            ->whereBetween('created_at', [$reportStart, $reportEnd])
             ->groupBy('date')
             ->orderBy('date')
             ->get()
@@ -44,13 +50,14 @@ abstract class DashboardChartsQuery
             ->toArray();
     }
 
-    protected function statusBreakdown(?User $user, CarbonInterface $month): array
+    protected function statusBreakdown(
+        ?User $user,
+        CarbonInterface $reportStart,
+        CarbonInterface $reportEnd,
+    ): array
     {
         $query = $this->baseQuery($user)
-            ->whereBetween('created_at', [
-                $month->copy()->startOfMonth(),
-                $month->copy()->endOfMonth(),
-            ]);
+            ->whereBetween('created_at', [$reportStart, $reportEnd]);
 
         return [
             'open' => (clone $query)->where('status', 'open')->count(),
@@ -59,7 +66,11 @@ abstract class DashboardChartsQuery
         ];
     }
 
-    protected function ticketsByBuilding(?User $user, CarbonInterface $month)
+    protected function ticketsByBuilding(
+        ?User $user,
+        CarbonInterface $reportStart,
+        CarbonInterface $reportEnd,
+    )
     {
         return $this->baseQuery($user)
             ->select(
@@ -67,10 +78,7 @@ abstract class DashboardChartsQuery
                 DB::raw('COUNT(tickets.id) as total')
             )
             ->join('buildings', 'tickets.building_id', '=', 'buildings.id')
-            ->whereBetween('tickets.created_at', [
-                $month->copy()->startOfMonth(),
-                $month->copy()->endOfMonth(),
-            ])
+            ->whereBetween('tickets.created_at', [$reportStart, $reportEnd])
             ->groupBy('buildings.id', 'buildings.name')
             ->orderByDesc('total')
             ->get()
