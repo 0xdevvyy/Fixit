@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { LayoutGrid, TicketCheck } from '@lucide/vue';
+import { FileText, LayoutGrid, TicketCheck } from '@lucide/vue';
 
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/sidebar';
 
 import { dashboard } from '@/routes';
+import reports from '@/routes/reports';
 import tickets from '@/routes/tickets';
 
 import type { NavItem } from '@/types';
@@ -36,6 +37,12 @@ const mainNavItems: NavItem[] = [
         title: 'Tickets',
         href: tickets.index(),
         icon: TicketCheck,
+        roles: ['admin', 'teacher', 'maintenance'],
+    },
+    {
+        title: 'Reports',
+        href: reports.index(),
+        icon: FileText,
         roles: ['admin', 'teacher', 'maintenance'],
     },
 ];

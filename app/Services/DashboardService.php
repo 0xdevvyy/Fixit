@@ -10,6 +10,7 @@ use App\Queries\Ticket\Maintenance\MaintenanceCharts;
 use App\Queries\Ticket\Maintenance\MaintenanceStats;
 use App\Queries\Ticket\Teacher\TeacherCharts;
 use App\Queries\Ticket\Teacher\TeacherStats;
+use Carbon\CarbonInterface;
 
 
 class DashboardService
@@ -28,21 +29,25 @@ class DashboardService
     }
 
 
-    public function data(User $user): array
+    public function data(
+        User $user,
+        ?CarbonInterface $reportStart = null,
+        ?CarbonInterface $reportEnd = null,
+    ): array
     {
         return match ($user->role) {
 
             RoleEnum::ADMIN => [
                 'title' => 'Admin Dashboard',
                 'stats' => $this->adminStats->getAdminStats(),
-                'charts' =>  $this->adminCharts->getCharts(),
+                'charts' => $this->adminCharts->getCharts($user, $reportStart, $reportEnd),
              
                 
             ],
             RoleEnum::TEACHER => [
                 'title' => 'Teacher Dashboard',
                 'stats' => $this->teacherStats->getTeacherStats($user),
-                'charts' =>  $this->teacherCharts->getCharts($user),
+                'charts' => $this->teacherCharts->getCharts($user, $reportStart, $reportEnd),
 
        
                 
@@ -50,7 +55,7 @@ class DashboardService
             RoleEnum::MAINTENANCE => [
                 'title' => 'Technician Dashboard',
                 'stats' =>  $this->maintenanceStats->getMaintenanceStats($user),
-                'charts' => $this->maintenanceCharts->getCharts($user),
+                'charts' => $this->maintenanceCharts->getCharts($user, $reportStart, $reportEnd),
             ],
         };
     }
