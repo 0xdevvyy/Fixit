@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Ticket\CreateTicket;
+use App\Actions\Ticket\DownloadTicketAction;
 use App\Actions\Ticket\EditAction;
 use App\Actions\Ticket\UpdateAction;
+
 use App\Enum\TicketCategory;
 use App\Enum\TicketPriority;
 use App\Enum\TicketStatus;
@@ -12,13 +14,14 @@ use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Models\Building;
+use App\Models\TicketAttachment;
 use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+
 
 class TicketController extends Controller
 {
@@ -113,6 +116,12 @@ class TicketController extends Controller
         // dd('this is tickets');
     }
 
+    public function downloadPdf(Ticket $ticket, DownloadTicketAction $action)
+    {
+        Gate::authorize('view', $ticket);
+        return $action->handle($ticket);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -151,7 +160,7 @@ class TicketController extends Controller
         Gate::authorize('update', $ticket);
         
         $action->handle($request->validated(), $ticket);
-        
+
         Inertia::flash('toast', [
             'type' => 'success',
             'message' => 'Ticket Succesfully Updated',

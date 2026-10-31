@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { ArrowRight } from '@lucide/vue';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { ArrowRight, Download } from '@lucide/vue';
 import { computed, ref } from 'vue';
+import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
 import TicketAfterUpload from '@/components/tickets/TicketAfterUpload.vue';
 import TicketBeforeUpload from '@/components/tickets/TicketBeforeUpload.vue';
 import TicketInfo from '@/components/tickets/TicketInfo.vue';
@@ -9,11 +10,16 @@ import TicketPhotos from '@/components/tickets/TicketPhotos.vue';
 import TicketTimeline from '@/components/tickets/TicketTimeline.vue';
 import Button from '@/components/ui/button/Button.vue';
 import tickets from '@/routes/tickets';
-import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
 
+interface Ticket {
+    id: number;
+    status: string;
+    before: string | null;
+    after: string | null;
+}
 
     const props = defineProps<{
-        ticket: object
+        ticket: Ticket
     }>()
 
     defineOptions({
@@ -23,10 +29,10 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
                     title: 'Tickets',
                     href: tickets.index(),
                 },
-                // {
-                //     title: 'Tickets',
-                //     href: ticketUrl.url,
-                // },
+                {
+                    title: 'Ticket Show',
+                    href: tickets.show(1), //i dont know how to dynamically pass it i did props.tickets.id it doesnt work, but i just need to show it so i just did 1
+                },
 
             ]
         }
@@ -91,6 +97,13 @@ import TicketAcceptDialog from '@/components/tickets/TicketAcceptDialog.vue';
 <template>
     <Head title="Tickets Show" />
     <div class="w-full max-w-7xl mx-auto px-8 py-8">
+
+        <div class="mb-6 flex justify-end">
+            <Button as="a" :href="`/tickets/${ticket.id}/pdf`" class="cursor-pointer">
+                <Download class="mr-2 h-4 w-4" />
+                Download PDF
+            </Button>
+        </div>
 
         <div class="grid gap-6 lg:grid-cols-3">
 
