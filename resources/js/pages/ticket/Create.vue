@@ -27,7 +27,6 @@ import tickets from '@/routes/tickets';
         categories: any[]
         users: any[]
         buildings: any[]
-        status: any[]
         priority: any[]
     }>()
 
@@ -39,7 +38,6 @@ import tickets from '@/routes/tickets';
         'room' : '',
         'category': '',
         'priority': '',
-        'status': ''
     })
 
     const submit = () => {
@@ -86,7 +84,6 @@ import tickets from '@/routes/tickets';
                         :categories="props.categories"
                         :users="props.users"
                         :buildings="props.buildings"
-                        :statuses="props.status"
                         :priorities="props.priority"
                     />
                     <div class="flex justify-end mt-6">

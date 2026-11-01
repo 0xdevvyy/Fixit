@@ -49,7 +49,7 @@ const mainNavItems: NavItem[] = [
         title: 'Buildings',
         href: '/buildings',
         icon: Building2,
-        roles: ['admin', 'teacher', 'maintenance'],
+        roles: ['admin'],
     },
 ];
 

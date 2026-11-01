@@ -57,10 +57,6 @@ class TicketController extends Controller
                 'label' => str($priority->value)->headline(),
             ]),
 
-            'status' => collect(TicketStatus::cases())->map(fn ($status) => [
-                'value' => $status->value,
-                'label' => str($status->value)->headline(),
-            ]),
         ]);
     }
 

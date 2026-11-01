@@ -30,6 +30,8 @@ interface Ticket {
   category: string
   priority: string
   status: string
+  reporter_id: number
+  assigned_to_id: number | null
   assigned_to: string | null
   reporter: string
   room: string
@@ -81,6 +83,11 @@ const statusVariant = (status: string) => {
 
 const page = usePage();
 const user = computed(()=> page.props.auth.user)
+
+function canManageTicket(ticket: Ticket) {
+  return user.value.role !== 'admin'
+    && (ticket.reporter_id === user.value.id || ticket.assigned_to_id === user.value.id)
+}
 </script>
 
 <template>
@@ -160,6 +167,7 @@ const user = computed(()=> page.props.auth.user)
                     </Button>
 
                     <Button
+                        v-if="canManageTicket(ticket)"
                         as-child
                         variant="secondary"
                         size="sm"
@@ -172,7 +180,7 @@ const user = computed(()=> page.props.auth.user)
                     </Button>
 
                    <TicketDeleteDialog
-                       v-if="user.role !== 'admin'"
+                       v-if="canManageTicket(ticket)"
                       @delete="deleteTicket(ticket)"
                   />
 
