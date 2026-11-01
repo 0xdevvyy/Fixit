@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TicketAcceptController;
 use App\Http\Controllers\TicketAttachmentController;
@@ -13,6 +14,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
      Route::get('/dashboard', DashboardController::class)->name('dashboard');
      Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
      Route::get('/reports/download', [ReportController::class, 'download'])->name('reports.download');
+     Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
+     Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+     Route::patch('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
+     Route::delete('/buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
      Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 
      //will group this

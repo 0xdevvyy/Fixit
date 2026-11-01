@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { FileText, LayoutGrid, TicketCheck } from '@lucide/vue';
+import { Building2, FileText, LayoutGrid, TicketCheck } from '@lucide/vue';
 
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -43,6 +43,12 @@ const mainNavItems: NavItem[] = [
         title: 'Reports',
         href: reports.index(),
         icon: FileText,
+        roles: ['admin', 'teacher', 'maintenance'],
+    },
+    {
+        title: 'Buildings',
+        href: '/buildings',
+        icon: Building2,
         roles: ['admin', 'teacher', 'maintenance'],
     },
 ];
