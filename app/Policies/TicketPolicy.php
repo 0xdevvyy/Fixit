@@ -17,8 +17,8 @@ class TicketPolicy
     {
         if(
             $user->role === RoleEnum::ADMIN ||
-            $ticket->reporter->is($user) ||
-            $ticket->assignedTo->is($user)
+            $ticket->user_id === $user->id ||
+            $ticket->assigned_to === $user->id
         ){
             return Response::allow();
         }
@@ -34,12 +34,10 @@ class TicketPolicy
      */
     public function edit(User $user, Ticket $ticket): Response
     {
-        if(
-            $ticket->reporter->is($user) || $ticket->assignedTo->is($user)
-        ){
+        if ($this->canManage($user, $ticket)) {
             return Response::allow();
         }
-        return Response::denyWithStatus(403);
+        return Response::denyWithStatus(404);
     }
 
     /**
@@ -47,9 +45,11 @@ class TicketPolicy
      */
     public function update(User $user, Ticket $ticket): Response
     {
-        //pwede rin palang sa request mo nalang yung policy
-        dd('test');
+        if ($this->canManage($user, $ticket)) {
+            return Response::allow();
+        }
 
+        return Response::denyWithStatus(404);
     }
 
     /**
@@ -57,14 +57,18 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket): Response
     {
-        if(
-            $ticket->reporter->is($user) || $ticket->assignedTo->is($user)
-        ){
+        if ($this->canManage($user, $ticket)) {
             return Response::allow();
         }
 
 
-        return Response::denyWithStatus(403);
+        return Response::denyWithStatus(404);
+    }
+
+    private function canManage(User $user, Ticket $ticket): bool
+    {
+        return $user->role !== RoleEnum::ADMIN
+            && ($ticket->user_id === $user->id || $ticket->assigned_to === $user->id);
     }
 
     public function accept(User $user): Response {
@@ -72,7 +76,7 @@ class TicketPolicy
             if($user->role == RoleEnum::ADMIN){
                 return Response::allow();
             }
-            return Response::denyWithStatus(403);
+            return Response::denyWithStatus(404);
           
     }
 
@@ -88,7 +92,7 @@ class TicketPolicy
             return Response::allow();
         }
        
-        return Response::denyWithStatus(403);
+        return Response::denyWithStatus(404);
     }
 
   
