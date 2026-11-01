@@ -11,16 +11,28 @@ Fixit helps Dominican College of Tarlac manage maintenance requests efficiently 
 ---
 
 ## Status
-> **Currently under development.**
+> **Ready for use.**
 
-🚧 The core ticket management workflow is implemented, while additional features and improvements are actively being developed.
+If there is an issue, please report it so it can be addressed as soon as possible.
+
+## Features
+
+- Teachers and staff can submit maintenance tickets and track their status.
+- Administrators can assign tickets to maintenance personnel.
+- Administrators can add, edit, and delete buildings from the Buildings page. Building details show the assigned maintenance personnel, if any.
+- Administrators can assign or change a building's maintenance personnel when creating or editing it.
+- Teachers and maintenance personnel can view buildings and their assigned maintenance personnel.
+- Maintenance personnel can view and filter their assigned tickets and monitor ticket totals by status on their dashboard.
+- Maintenance personnel can upload before-work and after-work photos to document repairs. Uploading the before photo marks a ticket as in progress; uploading the after photo marks it complete and notifies the reporter.
+- Maintenance personnel can view ticket details and download ticket PDFs.
+- Administrators can review ticket reports and download them as PDFs.
 
 ## ⚙️ Installation
 
 Clone the repository.
 
 ```bash
-git clone https://github.com/your-username/fixit.git
+git clone https://github.com/0xdevvyy/fixit.git
 ```
 
 Navigate to the project directory.
