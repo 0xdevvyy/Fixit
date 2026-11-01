@@ -34,10 +34,6 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
-    statuses: {
-        type: Array,
-        default: () => [],
-    },
 })
 const form = computed(() => props.form)
 </script>
@@ -102,8 +98,8 @@ const form = computed(() => props.form)
             </p>
         </div>
 
-        <!-- Priority / Status -->
-        <div class="grid gap-5 md:grid-cols-2">
+        <!-- Priority -->
+        <div class="grid gap-5">
             <!-- Priority -->
             <div class="space-y-2">
                 <Label>Priority</Label>
@@ -134,35 +130,6 @@ const form = computed(() => props.form)
                 </p>
             </div>
 
-            <!-- Status -->
-            <div class="space-y-2">
-                <Label>Status</Label>
-
-                <div class="rounded-md border bg-muted/30">
-                    <Select v-model="form.status">
-                        <SelectTrigger class="h-full w-full border-0 bg-transparent px-4 shadow-none focus-visible:ring-0">
-                            <SelectValue placeholder="Select Status" />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                            <SelectItem
-                                v-for="status in statuses"
-                                :key="status.value"
-                                :value="status.value"
-                            >
-                                {{ status.label }}
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                <p
-                    v-if="form.errors.status"
-                    class="text-sm text-destructive"
-                >
-                    {{ form.errors.status }}
-                </p>
-            </div>
         </div>
 
         <!-- Assigned -->
