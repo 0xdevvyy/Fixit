@@ -64,14 +64,13 @@ test('building assignments must be maintenance users', function () {
     $this->assertDatabaseCount('buildings', 0);
 });
 
-test('non-admin users can view but cannot manage buildings', function () {
+test('non-admin users cannot view or manage buildings', function () {
     $teacher = User::factory()->create(['role' => RoleEnum::TEACHER]);
     $building = Building::create(['name' => 'Main Building']);
 
     $this->actingAs($teacher)
         ->get(route('buildings.index'))
-        ->assertOk()
-        ->assertInertia(fn ($page) => $page->where('canManage', false));
+        ->assertForbidden();
 
     $this->post(route('buildings.store'), ['name' => 'New Building'])
         ->assertForbidden();

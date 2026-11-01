@@ -10,12 +10,12 @@ class BuildingPolicy
 {
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->role === RoleEnum::ADMIN;
     }
 
     public function view(User $user, Building $building): bool
     {
-        return true;
+        return $user->role === RoleEnum::ADMIN;
     }
 
     public function create(User $user): bool
